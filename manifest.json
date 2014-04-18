@@ -6,5 +6,16 @@
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",
     "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["jquery.js", "content.js"]
+    }
+  ],
+  "browser_action": {
+    "default_icon": "icons/icon19.png",
+    "default_title": "Web Highlighter",
+    "default_popup": "src/browser_action/browser_action.html"
   }
 }
