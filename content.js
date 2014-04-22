@@ -6,9 +6,6 @@ var highlightSpan = function() {
 }
 
 var highlight = function(anchorNode, anchorOffset, focusNode, focusOffset, range) {
-  // var span = document.createElement("span");
-  // span.className = "highlighted";
-  // span.style.backgroundColor = "yellow";
   console.log('ANCHOR === FOCUS: ' + (anchorNode === focusNode).toString());
   // selection is within same DOM node
   if (anchorNode === focusNode) {
@@ -22,7 +19,6 @@ var highlight = function(anchorNode, anchorOffset, focusNode, focusOffset, range
     range.detach();
 
     var highlightNodes = function() {
-      // debugger;
       var nodes = [];
       var highlighted = false;
       var recurseNodes = function(nodeList) {
@@ -33,22 +29,11 @@ var highlight = function(anchorNode, anchorOffset, focusNode, focusOffset, range
 
           if (nodeList[i].className !== "highlighted") {
             if (highlighted) {
-              // if (range.endContainer === nodeList[i]) {
               if (focusNode === nodeList[i]) {
                 console.log('FOUND END CONTAINER');
                 console.dir(nodeList[i]);
                 nodes.push(nodeList[i]);
                 highlighted = false;
-
-                // console.log('HIGHLIGHT APPLIED');
-                // var newRange = document.createRange();
-                // newRange.setStart(nodeList[i], 0);
-                // newRange.setEnd(nodeList[i], focusOffset);
-                // newRange.surroundContents(span);
-                // newRange.detach();
-
-                // console.log('RETURN');
-                // return;
               } else {
                 console.log('WHOLE DOM NODE');
                 console.log(nodeList[i]);
@@ -56,12 +41,6 @@ var highlight = function(anchorNode, anchorOffset, focusNode, focusOffset, range
                   console.log('FOUND TEXT NODE');
                   console.log(nodeList[i]);
                   nodes.push(nodeList[i]);
-
-                  // console.log('HIGHLIGHT APPLIED');
-                  // var newRange = document.createRange();
-                  // newRange.selectNode(nodeList[i]); // selectNodeContents?
-                  // newRange.surroundContents(span);
-                  // newRange.detach();
                 }
               }
             }
@@ -70,14 +49,6 @@ var highlight = function(anchorNode, anchorOffset, focusNode, focusOffset, range
               console.dir(nodeList[i]);
               nodes.push(nodeList[i]);
               highlighted = true;
-
-              // TODO: highlighting creates more nodes... and causes weird disappearing bug
-              // console.log('HIGHLIGHT APPLIED');
-              // var newRange = document.createRange();
-              // newRange.setStart(nodeList[i], anchorOffset);
-              // newRange.setEnd(nodeList[i], nodeList[i].length);
-              // newRange.surroundContents(span);
-              // newRange.detach();
             }
             if (nodeList[i].hasChildNodes()) {
               console.log('found children... recursing through: ');
@@ -86,7 +57,6 @@ var highlight = function(anchorNode, anchorOffset, focusNode, focusOffset, range
             }
           }
         }
-
       };
       recurseNodes(ancestorChildNodes);
       return nodes;
@@ -94,36 +64,25 @@ var highlight = function(anchorNode, anchorOffset, focusNode, focusOffset, range
 
     var nodesToHighlight = highlightNodes();
     for (var i = 0; i < nodesToHighlight.length; i++) {
-      // debugger;
       if (i === 0) {
-        // var span = document.createElement("span");
-        // span.className = "highlighted";
-        // span.style.backgroundColor = "yellow";
         var newRange = document.createRange();
         newRange.setStart(nodesToHighlight[i], anchorOffset);
         newRange.setEnd(nodesToHighlight[i], nodesToHighlight[i].length);
         newRange.surroundContents(highlightSpan());
         newRange.detach();
       } else if (i === nodesToHighlight.length - 1) {
-        // var span = document.createElement("span");
-        // span.className = "highlighted";
-        // span.style.backgroundColor = "yellow";
         var newRange = document.createRange();
         newRange.setStart(nodesToHighlight[i], 0);
         newRange.setEnd(nodesToHighlight[i], focusOffset);
         newRange.surroundContents(highlightSpan());
         newRange.detach();
       } else {
-        // var span = document.createElement("span");
-        // span.className = "highlighted";
-        // span.style.backgroundColor = "yellow";
         var newRange = document.createRange();
         newRange.selectNode(nodesToHighlight[i]);
         newRange.surroundContents(highlightSpan());
         newRange.detach();
       }
     }
-
   }
 };
 
